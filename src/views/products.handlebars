@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Productos</title>
+</head>
+<body>
+
+  {{#if status}}
+    <p>Status: {{status}}</p>
+  {{/if}}
+
+  {{#if payload}}
+    {{#if payload.products}}
+      <h1>Lista de Productos</h1>
+      
+      <ul>
+        {{#each payload.products}}
+          <h2>Producto:{{this.title}}</h2>
+          <p>Descripcion:{{this.description}}</p>
+          <p>imagen:{{this.thumbnail}}</p>
+          <p>Precio:{{this.price}}</p>
+          <p>Categoria:{{this.category}}</p>
+          <button>Agregar al carrito</button>
+        {{/each}}
+
+        <div>
+        {{#if payload.hasPrevPage}}
+          <a href="/products?pageQuery={{payload.prevPage}}">Anterior</a>
+        {{/if}}
+        <label>{{payload.page}}</label>
+        {{#if payload.hasNextPage}}
+          <a href="/products?pageQuery={{payload.nextPage}}">Siguiente</a>
+        {{/if}}
+      </ul>
+    {{else}}
+      <p>{{payload.message}}</p>
+    {{/if}}
+  {{/if}}
+</div>
+</body>
+</html>
+

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Encabezado de la vista del carrito -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrito de Compras</title>
+</head>
+<body>
+
+  <h1>Carrito de Compras</h1>
+
+  {{#if cart.products}}
+    <!-- Lista de productos en el carrito -->
+    <ul>
+ {{#each cart.products}}
+  <li>
+    <h2>Producto: {{this.product.title}}</h2>
+    <p>Descripción: {{this.product.description}}</p>
+    <p>Precio: {{this.product.price}}</p>
+    <p>Cantidad: {{this.quantity}}</p>
+  </li>
+{{/each}}
+    </ul>
+  {{else}}
+    <!-- Mensaje si el carrito está vacío -->
+    <p>El carrito está vacío.</p>
+  {{/if}}
+
+</body>
+</html>
+
+
+{{!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle del Carrito</title>
+</head>
+<body>
+
+  {{#if status}}
+    <p>Status: {{status}}</p>
+  {{/if}}
+
+  {{#if payload}}
+    {{#if payload.products}}
+      <h1>Productos en el Carrito</h1>
+      <ul>
+        {{#each payload.products}}
+          <li>
+            <h2>Producto: {{this.product.title}}</h2>
+            <p>Descripción: {{this.product.description}}</p>
+            <p>Precio: {{this.product.price}}</p>
+            <p>Cantidad: {{this.quantity}}</p>
+          </li>
+        {{/each}}
+      </ul>
+     
+    {{else}}
+      <p>No hay productos en el carrito.</p>
+    {{/if}}
+  {{/if}}
+
+</body>
+</html> --}}

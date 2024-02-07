@@ -41,19 +41,6 @@ app.set("views", __dirname + "/views")
 app.set("view engine", "handlebars")
 
 
-//vista de todos los productos 
-// app.get("/", async (req, res) => {
-//     try {
-//     const allProducts = await productModel.find();
-//     const productsJSON = allProducts.map(product => product.toObject()); 
-//     res.render("index", { products: productsJSON });
-//     } catch (error) {
-//     console.log(error);
-//     res.status(500).send("Error interno del servidor");
-//     }
-// });
-
-
 
 //vista del chat 
 
@@ -68,7 +55,7 @@ app.post("/file",uploader.single("myFile"),(req,res) =>{
 app.use("/api/products",productsRouter);
 app.use("/api/carts", cartsRouter )
 app.use("/chat/message", messagesRouter)
-
+app.use("/carts",cartsRouter)
 app.use("/", viewRouter)
 
 //productos actualizado en tiempo real

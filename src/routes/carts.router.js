@@ -34,14 +34,13 @@ cartsRouter.post("/", async (req, res) => {
 
 //obtengo el carrito por su id
 cartsRouter.get("/:cid", async (req, res) => {
-  
   const { cid } = req.params;
 
   try {
     const cart = await cartManagerMongo.getCart(cid);
-    res.json(cart);
-  } 
-  catch (error) {
+    console.log(cart); // Agrega este console.log para verificar la estructura de cart
+    res.render("carts", { cart });
+  } catch (error) {
     console.error("Error al obtener el carrito:", error);
     res.status(500).send("Error al obtener carrito");
   }
@@ -49,20 +48,21 @@ cartsRouter.get("/:cid", async (req, res) => {
 
 
 //agrego un producto por el id del producto
+
 cartsRouter.post("/:cid/products/:pid", async (req, res) => {
-  
   const { cid, pid } = req.params;
-  
   const { title, description, price, quantity } = req.body;
 
   try {
-    await cartManagerMongo.addProductToCart(cid, pid, title, description, price, quantity, res);
-  } 
-  catch (error) {
-    console.error("Error al agregar producto al carrito:", error);
-    res.status(500).send(`Error al agregar producto al carrito: ${error.message}`);
+      console.log("pid:", pid);
+      const updatedCart = await cartManagerMongo.addProductToCart(cid, pid, title, description, price, quantity);
+      // res.json(updatedCart);
+      res.send("Producto agregado al carrito")
+  } catch (error) {
+      console.error("Error al agregar producto al carrito:", error);
+      res.status(500).send(`Error al agregar producto al carrito: ${error.message}`);
   }
-})
+});
 
 
 //elimino el carrito por su id
@@ -87,15 +87,14 @@ cartsRouter.delete('/:cid/products/:pid', async (req, res) => {
   const { cid, pid } = req.params;
 
   try {
-    await cartManagerMongo.removeProductFromCart(cid, pid, res);
+    const deletedCart = await cartManagerMongo.removeProductFromCart(cid, pid, res);
     res.json({ message: 'Producto eliminado exitosamente del carrito', deletedCart });
-  
+
   } catch (error) {
     console.error("Error al eliminar producto del carrito:", error);
     res.status(500).send(`Error al eliminar producto del carrito: ${error.message}`);
   }
 });
-
 
 // Eliminar todos los productos del carrito
 cartsRouter.delete('/api/carts/:cid', async (req, res) => {

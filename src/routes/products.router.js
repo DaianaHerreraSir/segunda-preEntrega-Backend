@@ -1,5 +1,6 @@
 import { Router } from "express";
 import ProductsManagerMongo from "../daos/Mongo/productsManagerMongo.js";
+import productModel from "../models/products.models.js";
 
 
 const productsRouter = Router();
@@ -8,17 +9,41 @@ const productManager = new ProductsManagerMongo()
 
 
 productsRouter.get("/", async (req, res) => {
+
+try {
   
-  try {
-    
-    const products = await productManager.getProducts();
-    res.json(products);
-  } 
-  catch (error) {
-    console.log(error);
-    res.status(500).send("Error interno del servidor");
-  }
+  const limit = parseInt(req.query.limit) || 10;
+  const page = parseInt(req.query.page) || 1;
+  const sort = req.query.sort || 'none';
+  const query = req.query.query || '';
+
+
+  const options = {
+    page,
+    limit,
+    sort: sort === 'none' ? {} : { price: sort === 'asc' ? 1 : -1 },
+  };
+
+  
+  const filter = query ? { title: new RegExp(query, 'i') } : {};
+
+  
+  const result = await productModel.paginate(filter, options);
+
+  res.json({
+    total: result.totalDocs,
+    limit: result.limit,
+    page: result.page,
+    sort,
+    query,
+    products: result.docs,
+  });
+} catch (error) {
+  console.error(error);
+  res.status(500).json({ error: 'Internal Server Error' });
+}
 })
+
 
 
 productsRouter.get("/:pid", async (req, res) => {
@@ -93,6 +118,4 @@ productsRouter.delete("/:pid", async (req, res) => {
 });
 
 export default productsRouter;
-
-
 

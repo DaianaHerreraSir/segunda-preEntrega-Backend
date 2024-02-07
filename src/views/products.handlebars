@@ -22,8 +22,18 @@
           <p>imagen:{{this.thumbnail}}</p>
           <p>Precio:{{this.price}}</p>
           <p>Categoria:{{this.category}}</p>
-          <button>Agregar al carrito</button>
+
+        <form action="http://localhost:8083/api/carts/65c21b7777f71b6c8044d2a9/products/{{this._id}}" method="POST">
+              <input type="hidden" name="title" value="{{this.title}}">
+              <input type="hidden" name="description" value="{{this.description}}">
+              <input type="hidden" name="price" value="{{this.price}}">
+              <input type="hidden" name="quantity" value="1">
+              <button type="submit">Agregar al carrito</button>
+            </form>
+          </li>
         {{/each}}
+      </ul>
+
 
         <div>
         {{#if payload.hasPrevPage}}
